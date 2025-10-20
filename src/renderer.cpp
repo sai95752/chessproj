@@ -49,7 +49,8 @@ void Renderer::drawPieces(sf::RenderWindow& window, const Board& board) {
                 
                 // Center the piece in the square
                 sf::FloatRect bounds = text.getLocalBounds();
-                text.setOrigin(sf::Vector2f(bounds.size.x / 2.0f, bounds.size.y / 2.0f));
+                text.setOrigin(sf::Vector2f(bounds.position.x + bounds.size.x / 2.0f,
+                                          bounds.position.y + bounds.size.y / 2.0f));
                 text.setPosition(
                     sf::Vector2f(
                         col * SQUARE_SIZE + SQUARE_SIZE / 2.0f,

@@ -13,12 +13,15 @@ add_executable(Chess
     src/renderer.cpp
     src/board.cpp
     src/theme.cpp
-    
+    src/game.cpp
+    src/validator.cpp
+
     include/renderer.h
     include/theme.h
     include/board.h
     include/piece.h
-
+    include/game.h
+    include/validator.h
 )
 
 # SFML 3.0 uses SFML:: prefix
