@@ -1,5 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+
+//TODO
+//ADD FONT and DIALOG theming into struct
 struct Theme {
 private:
     sf::Color LIGHT_COLOR;

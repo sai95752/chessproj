@@ -1,6 +1,8 @@
+#pragma once
 #include <SFML/Graphics.hpp>
 #include "theme.h"
 #include "board.h"
+#include "validator.h"
 #include <map>
 #include <optional>
 #include <iostream>
@@ -33,7 +35,13 @@ public:
     void drawBoard(sf::RenderWindow& window);
     void drawPieces(sf::RenderWindow& window, const Board& board);
     void drawHighlight(sf::RenderWindow& window, int row, int col);
-    void updateSize(const sf::RenderWindow& window);
+    void drawPromoteDialog(sf::RenderWindow& window, PIECE_COLOR color);
+    PIECE_TYPE getPromotionChoice(const sf::RenderWindow& window, int mouseX, int mouseY, PIECE_COLOR color) const;
+
     
+    void updateSize(const sf::RenderWindow& window);
     float getSquareSize() const { return SQUARE_SIZE; }
+    
+    
+    void drawGameOver(sf::RenderWindow& window, GAME_STATE state, PIECE_COLOR loser);
 };

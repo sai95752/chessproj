@@ -1,7 +1,21 @@
 #include "board.h"
 
 Board::Board() {
+    enPassantCol = -1;
+    whiteKingMoved = false;
+    whiteKRookMoved = false;
+    whiteQRookMoved = false;
+    blackKingMoved = false;
+    blackKRookMoved = false;
+    blackQRookMoved = false;
     initialize();
+}
+
+Board::Board(const Board& other) {
+    for(int row = 0; row < 8; row++) {
+        for(int col = 0; col < 8; col++)
+            grid[row][col] = other.grid[row][col];
+    }
 }
 
 void Board::initialize() {
@@ -48,9 +62,50 @@ void Board::setPiece(int row, int col, const Piece& piece) {
 }
 
 bool Board:: movePiece(int startRow, int startCol, int endRow, int endCol) {
-    Piece piece = Board::getPiece(startRow, startCol);
+    Piece piece = getPiece(startRow, startCol);
     if(!piece.isEmpty()) {
-        Board::setPiece(endRow, endCol, piece);
+        if(piece.type == PIECE_TYPE::KING) {
+            if(piece.color == PIECE_COLOR::WHITE) {
+                whiteKingMoved = true;
+            } else if(piece.color == PIECE_COLOR::BLACK) {
+                blackKingMoved = true;
+            }
+            
+            if(abs(endCol - startCol) == 2) {
+                if(endCol > startCol) {
+                    int rookRow = startRow;
+                    movePiece(rookRow, 7, rookRow, endCol - 1);
+                }
+            } else {
+                int rookRow = startRow;
+                movePiece(rookRow, 0, rookRow, endCol + 1);
+            }
+        }
+        
+        //rook move checker
+        if(piece.type == PIECE_TYPE::ROOK) {
+            if(piece.color == PIECE_COLOR::WHITE) {
+                if(startRow == 7 && startCol == 7) whiteKRookMoved = true;
+                if(startRow == 7 && startCol == 0) whiteQRookMoved = true;
+            } else {
+                if(startRow == 0 && startCol == 7) blackKRookMoved = true;
+                if(startRow == 0 && startCol == 0) blackQRookMoved = true;
+            }
+        }
+        
+        //en passant checker
+        if(piece.type == PIECE_TYPE::PAWN && abs(startRow - endRow) == 2) {
+            enPassantCol = startCol;
+        } else {
+            enPassantCol = -1;
+        }
+        if (piece.type == PIECE_TYPE::PAWN && startCol != endCol && getPiece(endRow, endCol).isEmpty()) {
+            //en passant
+            int capturedPawnRow = (piece.color == PIECE_COLOR::WHITE) ? endRow + 1 : endRow - 1;
+            clearSquare(capturedPawnRow, endCol);
+        }
+        
+        setPiece(endRow, endCol, piece);
         clearSquare(startRow, startCol);
         return true;
     }
@@ -60,3 +115,5 @@ bool Board:: movePiece(int startRow, int startCol, int endRow, int endCol) {
 void Board::clearSquare(int row, int col) {
     if(row >= 0 && row < 8 && col >= 0 && col < 8) setPiece(row, col, Piece());
 }
+
+
