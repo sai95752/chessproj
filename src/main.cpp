@@ -21,7 +21,7 @@ int main() {
     
     window.setView(window.getDefaultView());
 
-    Theme myTheme = getTheme(ThemeType::BLUE);
+    Theme myTheme = getTheme(ThemeType::DARK);
 
     tgui::Gui gui(window);
     Menu menu(gui, myTheme);

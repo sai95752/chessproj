@@ -51,9 +51,11 @@ void Game::movePiece(int toRow, int toCol) {
             std::cout << "Successful move!" << std::endl;
             board.movePiece(selectedRow, selectedCol, toRow, toCol);
             checkPawnPromotion(toRow, toCol);
-            switchTurn();
+            if(!awaitingPromotion) {
+                switchTurn();
+                updateGameState();
+            }
             deselectPiece();
-            updateGameState();
         } else {
             std::cout << "Invalid move!" << std::endl;
             deselectPiece();
@@ -108,13 +110,14 @@ void Game::handlePromotionClick(const sf::RenderWindow& window, int mouseX, int 
     if(choice != PIECE_TYPE::NONE && choice != PIECE_TYPE::PAWN) {
         Piece promotedPiece(choice, promotionColor);
         board.setPiece(promotionRow, promotionCol, promotedPiece);
-        
+
         awaitingPromotion = false;
         promotionRow = -1;
         promotionCol = -1;
         promotionColor = PIECE_COLOR::NONE;
-        
+
         switchTurn();
+        updateGameState();
     }
 }
 

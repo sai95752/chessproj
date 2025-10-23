@@ -1,6 +1,6 @@
 #include "menu.h"
 
-Menu::Menu(tgui::Gui& gui, Theme& theme) : gui(gui), theme(theme), choice(MENU_CHOICE::NONE), showing(false), selectedThemeType(ThemeType::BLUE), themeChanged(false) {
+Menu::Menu(tgui::Gui& gui, Theme& theme) : gui(gui), theme(theme), choice(MENU_CHOICE::NONE), showing(false), selectedThemeType(ThemeType::DARK), themeChanged(false) {
 }
 
 void Menu::show() {
@@ -22,7 +22,7 @@ void Menu::createMainMenuView() {
     //bg
     auto bgPanel = tgui::Panel::create();
     bgPanel->setSize("100%", "100%");
-    sf::Color uiBg = theme.getUiBg();
+    sf::Color uiBg = theme.getUiBg(); 
     bgPanel->getRenderer()->setBackgroundColor(tgui::Color(uiBg.r, uiBg.g, uiBg.b));
     gui.add(bgPanel);
 

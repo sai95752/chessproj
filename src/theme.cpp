@@ -1,562 +1,575 @@
 #include "theme.h"
 
+namespace {
+    inline int clamp(int v){ return v < 0 ? 0 : (v > 255 ? 255 : v); }
+    sf::Color dull(sf::Color c, float factor){
+        int target = 128;
+        return sf::Color(
+            static_cast<uint8_t>(clamp(static_cast<int>(c.r + (target - c.r) * factor))),
+            static_cast<uint8_t>(clamp(static_cast<int>(c.g + (target - c.g) * factor))),
+            static_cast<uint8_t>(clamp(static_cast<int>(c.b + (target - c.b) * factor))),
+            c.a
+        );
+    }
+}
+
 Theme getTheme(ThemeType type) {
+    const float boardDull = 0.20f;
+    const float uiDull = 0.12f;
+    const float buttonDull = 0.10f;
+    const float textDull = 0.08f;
+
     switch(type) {
         case ThemeType::CLASSIC:
             return Theme(
-                //board
-                sf::Color(240, 217, 181),      // Light square
-                sf::Color(181, 136, 99),       // Dark square
-                sf::Color(255, 255, 0, 100),   // Highlight
-                //ui
-                sf::Color(250, 250, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 249, 250),      // Panel light
-                sf::Color(220, 220, 225),      // Border
-                sf::Color(230, 230, 235),      // Divider
-                //buttons
-                sf::Color(181, 136, 99),       // Primary
-                sf::Color(161, 116, 79),       // Primary hover
-                sf::Color(240, 240, 245),      // Secondary
-                sf::Color(220, 220, 225),      // Secondary hover
-                sf::Color(220, 80, 70),        // Danger
-                sf::Color(200, 60, 50),        // Danger hover
-                sf::Color(119, 149, 86),       // Success
-                sf::Color(99, 129, 66),        // Success hover
-                //text
-                sf::Color(30, 30, 35),         // Primary text
-                sf::Color(110, 110, 120),      // Secondary text
-                sf::Color(181, 136, 99),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(240, 217, 181), boardDull),
+                dull(sf::Color(181, 136, 99), boardDull),
+                sf::Color(255, 255, 0, 100),
+                dull(sf::Color(250, 250, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 249, 250), uiDull),
+                dull(sf::Color(220, 220, 225), uiDull),
+                dull(sf::Color(230, 230, 235), uiDull),
+                dull(sf::Color(181, 136, 99), buttonDull),
+                dull(sf::Color(161, 116, 79), buttonDull),
+                dull(sf::Color(240, 240, 245), buttonDull),
+                dull(sf::Color(220, 220, 225), buttonDull),
+                dull(sf::Color(220, 80, 70), buttonDull),
+                dull(sf::Color(200, 60, 50), buttonDull),
+                dull(sf::Color(119, 149, 86), buttonDull),
+                dull(sf::Color(99, 129, 66), buttonDull),
+                dull(sf::Color(30, 30, 35), textDull),
+                dull(sf::Color(110, 110, 120), textDull),
+                dull(sf::Color(181, 136, 99), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::MODERN:
             return Theme(
-                sf::Color(235, 236, 208),      // Light square
-                sf::Color(119, 149, 86),       // Dark square
-                sf::Color(255, 255, 100, 120), // Highlight
-                sf::Color(250, 251, 248),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 250, 246),      // Panel light
-                sf::Color(210, 220, 200),      // Border
-                sf::Color(225, 230, 215),      // Divider
-                sf::Color(119, 149, 86),       // Primary
-                sf::Color(99, 129, 66),        // Primary hover
-                sf::Color(240, 242, 238),      // Secondary
-                sf::Color(220, 225, 210),      // Secondary hover
-                sf::Color(200, 80, 70),        // Danger
-                sf::Color(180, 60, 50),        // Danger hover
-                sf::Color(100, 180, 100),      // Success
-                sf::Color(80, 160, 80),        // Success hover
-                sf::Color(30, 35, 30),         // Primary text
-                sf::Color(100, 115, 90),       // Secondary text
-                sf::Color(119, 149, 86),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(235, 236, 208), boardDull),
+                dull(sf::Color(119, 149, 86), boardDull),
+                sf::Color(255, 255, 100, 120),
+                dull(sf::Color(250, 251, 248), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 250, 246), uiDull),
+                dull(sf::Color(210, 220, 200), uiDull),
+                dull(sf::Color(225, 230, 215), uiDull),
+                dull(sf::Color(119, 149, 86), buttonDull),
+                dull(sf::Color(99, 129, 66), buttonDull),
+                dull(sf::Color(240, 242, 238), buttonDull),
+                dull(sf::Color(220, 225, 210), buttonDull),
+                dull(sf::Color(200, 80, 70), buttonDull),
+                dull(sf::Color(180, 60, 50), buttonDull),
+                dull(sf::Color(100, 180, 100), buttonDull),
+                dull(sf::Color(80, 160, 80), buttonDull),
+                dull(sf::Color(30, 35, 30), textDull),
+                dull(sf::Color(100, 115, 90), textDull),
+                dull(sf::Color(119, 149, 86), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::BLUE:
             return Theme(
-                // Board
-                sf::Color(222, 227, 230),      // Light square
-                sf::Color(140, 162, 173),      // Dark square
-                sf::Color(100, 200, 255, 120), // Highlight
-                sf::Color(245, 248, 250),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 251, 253),      // Panel light
-                sf::Color(200, 215, 225),      // Border
-                sf::Color(220, 230, 238),      // Divider
-                sf::Color(70, 130, 180),       // Primary
-                sf::Color(50, 110, 160),       // Primary hover
-                sf::Color(240, 245, 248),      // Secondary
-                sf::Color(220, 230, 238),      // Secondary hover
-                sf::Color(210, 70, 80),        // Danger
-                sf::Color(190, 50, 60),        // Danger hover
-                sf::Color(80, 160, 120),       // Success
-                sf::Color(60, 140, 100),       // Success hover
-                sf::Color(25, 35, 45),         // Primary text
-                sf::Color(100, 115, 130),      // Secondary text
-                sf::Color(70, 130, 180),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(222, 227, 230), boardDull),
+                dull(sf::Color(140, 162, 173), boardDull),
+                sf::Color(100, 200, 255, 120),
+                dull(sf::Color(245, 248, 250), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 251, 253), uiDull),
+                dull(sf::Color(200, 215, 225), uiDull),
+                dull(sf::Color(220, 230, 238), uiDull),
+                dull(sf::Color(70, 130, 180), buttonDull),
+                dull(sf::Color(50, 110, 160), buttonDull),
+                dull(sf::Color(240, 245, 248), buttonDull),
+                dull(sf::Color(220, 230, 238), buttonDull),
+                dull(sf::Color(210, 70, 80), buttonDull),
+                dull(sf::Color(190, 50, 60), buttonDull),
+                dull(sf::Color(80, 160, 120), buttonDull),
+                dull(sf::Color(60, 140, 100), buttonDull),
+                dull(sf::Color(25, 35, 45), textDull),
+                dull(sf::Color(100, 115, 130), textDull),
+                dull(sf::Color(70, 130, 180), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::DARK:
             return Theme(
-                sf::Color(120, 120, 120),      // Light square
-                sf::Color(60, 60, 60),         // Dark square
-                sf::Color(255, 255, 100, 120), // Highlight
-                sf::Color(18, 18, 20),         // Background
-                sf::Color(30, 30, 35),         // Panel
-                sf::Color(40, 40, 45),         // Panel light
-                sf::Color(55, 55, 60),         // Border
-                sf::Color(45, 45, 50),         // Divider
-                sf::Color(70, 130, 180),       // Primary
-                sf::Color(90, 150, 200),       // Primary hover
-                sf::Color(50, 50, 60),         // Secondary
-                sf::Color(65, 65, 75),         // Secondary hover
-                sf::Color(200, 70, 70),        // Danger
-                sf::Color(220, 90, 90),        // Danger hover
-                sf::Color(80, 180, 120),       // Success
-                sf::Color(100, 200, 140),      // Success hover
-                sf::Color(230, 230, 235),      // Primary text
-                sf::Color(140, 140, 150),      // Secondary text
-                sf::Color(120, 180, 230),      // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(120, 120, 120), boardDull),
+                dull(sf::Color(60, 60, 60), boardDull),
+                sf::Color(255, 255, 100, 120),
+                dull(sf::Color(18, 18, 20), uiDull),
+                dull(sf::Color(30, 30, 35), uiDull),
+                dull(sf::Color(40, 40, 45), uiDull),
+                dull(sf::Color(55, 55, 60), uiDull),
+                dull(sf::Color(45, 45, 50), uiDull),
+                dull(sf::Color(70, 130, 180), buttonDull),
+                dull(sf::Color(90, 150, 200), buttonDull),
+                dull(sf::Color(50, 50, 60), buttonDull),
+                dull(sf::Color(65, 65, 75), buttonDull),
+                dull(sf::Color(200, 70, 70), buttonDull),
+                dull(sf::Color(220, 90, 90), buttonDull),
+                dull(sf::Color(80, 180, 120), buttonDull),
+                dull(sf::Color(100, 200, 140), buttonDull),
+                dull(sf::Color(230, 230, 235), textDull),
+                dull(sf::Color(140, 140, 150), textDull),
+                dull(sf::Color(120, 180, 230), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::NEON_CYBERPUNK:
             return Theme(
-                sf::Color(20, 20, 40),         // Light square
-                sf::Color(10, 10, 25),         // Dark square
-                sf::Color(255, 0, 255, 150),   // Highlight
-                sf::Color(5, 5, 15),           // Background
-                sf::Color(15, 15, 30),         // Panel
-                sf::Color(25, 25, 40),         // Panel light
-                sf::Color(255, 0, 255),        // Border
-                sf::Color(0, 255, 255),        // Divider
-                sf::Color(255, 0, 255),        // Primary
-                sf::Color(200, 0, 200),        // Primary hover
-                sf::Color(30, 30, 50),         // Secondary
-                sf::Color(40, 40, 60),         // Secondary hover
-                sf::Color(255, 50, 100),       // Danger
-                sf::Color(200, 30, 80),        // Danger hover
-                sf::Color(0, 255, 200),        // Success
-                sf::Color(0, 200, 160),        // Success hover
-                sf::Color(0, 255, 255),        // Primary text
-                sf::Color(255, 0, 255),        // Secondary text
-                sf::Color(255, 255, 0),        // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(20, 20, 40), boardDull),
+                dull(sf::Color(10, 10, 25), boardDull),
+                sf::Color(255, 0, 255, 150),
+                dull(sf::Color(5, 5, 15), uiDull),
+                dull(sf::Color(15, 15, 30), uiDull),
+                dull(sf::Color(25, 25, 40), uiDull),
+                dull(sf::Color(100, 50, 150), uiDull),
+                dull(sf::Color(50, 150, 150), uiDull),
+                dull(sf::Color(200, 50, 200), buttonDull),
+                dull(sf::Color(180, 30, 180), buttonDull),
+                dull(sf::Color(30, 30, 50), buttonDull),
+                dull(sf::Color(40, 40, 60), buttonDull),
+                dull(sf::Color(255, 50, 100), buttonDull),
+                dull(sf::Color(200, 30, 80), buttonDull),
+                dull(sf::Color(50, 200, 180), buttonDull),
+                dull(sf::Color(30, 180, 160), buttonDull),
+                dull(sf::Color(100, 200, 200), textDull),
+                dull(sf::Color(200, 100, 200), textDull),
+                dull(sf::Color(180, 180, 100), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::SAKURA:
             return Theme(
-                sf::Color(255, 240, 245),      // Light square
-                sf::Color(255, 182, 193),      // Dark square
-                sf::Color(255, 105, 180, 100), // Highlight
-                sf::Color(255, 250, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(255, 245, 250),      // Panel light
-                sf::Color(255, 182, 193),      // Border
-                sf::Color(255, 218, 224),      // Divider
-                sf::Color(219, 112, 147),      // Primary
-                sf::Color(199, 92, 127),       // Primary hover
-                sf::Color(255, 240, 245),      // Secondary
-                sf::Color(255, 220, 230),      // Secondary hover
-                sf::Color(220, 80, 100),       // Danger
-                sf::Color(200, 60, 80),        // Danger hover
-                sf::Color(255, 182, 193),      // Success
-                sf::Color(235, 162, 173),      // Success hover
-                sf::Color(139, 69, 94),        // Primary text
-                sf::Color(219, 112, 147),      // Secondary text
-                sf::Color(255, 105, 180),      // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(255, 240, 245), boardDull),
+                dull(sf::Color(255, 182, 193), boardDull),
+                sf::Color(255, 105, 180, 100),
+                dull(sf::Color(255, 250, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(255, 245, 250), uiDull),
+                dull(sf::Color(255, 182, 193), uiDull),
+                dull(sf::Color(255, 218, 224), uiDull),
+                dull(sf::Color(219, 112, 147), buttonDull),
+                dull(sf::Color(199, 92, 127), buttonDull),
+                dull(sf::Color(255, 240, 245), buttonDull),
+                dull(sf::Color(255, 220, 230), buttonDull),
+                dull(sf::Color(220, 80, 100), buttonDull),
+                dull(sf::Color(200, 60, 80), buttonDull),
+                dull(sf::Color(255, 182, 193), buttonDull),
+                dull(sf::Color(235, 162, 173), buttonDull),
+                dull(sf::Color(139, 69, 94), textDull),
+                dull(sf::Color(219, 112, 147), textDull),
+                dull(sf::Color(255, 105, 180), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::FOREST:
             return Theme(
-                sf::Color(193, 225, 193),      // Light square
-                sf::Color(76, 128, 76),        // Dark square
-                sf::Color(144, 238, 144, 120), // Highlight
-                sf::Color(245, 252, 245),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 254, 248),      // Panel light
-                sf::Color(144, 180, 144),      // Border
-                sf::Color(193, 225, 193),      // Divider
-                sf::Color(34, 139, 34),        // Primary
-                sf::Color(20, 119, 20),        // Primary hover
-                sf::Color(240, 248, 240),      // Secondary
-                sf::Color(220, 235, 220),      // Secondary hover
-                sf::Color(178, 34, 34),        // Danger
-                sf::Color(158, 20, 20),        // Danger hover
-                sf::Color(144, 238, 144),      // Success
-                sf::Color(124, 218, 124),      // Success hover
-                sf::Color(25, 60, 25),         // Primary text
-                sf::Color(76, 128, 76),        // Secondary text
-                sf::Color(34, 139, 34),        // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(193, 225, 193), boardDull),
+                dull(sf::Color(76, 128, 76), boardDull),
+                sf::Color(144, 238, 144, 120),
+                dull(sf::Color(245, 252, 245), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 254, 248), uiDull),
+                dull(sf::Color(144, 180, 144), uiDull),
+                dull(sf::Color(193, 225, 193), uiDull),
+                dull(sf::Color(60, 130, 60), buttonDull),
+                dull(sf::Color(50, 110, 50), buttonDull),
+                dull(sf::Color(240, 248, 240), buttonDull),
+                dull(sf::Color(220, 235, 220), buttonDull),
+                dull(sf::Color(178, 80, 80), buttonDull),
+                dull(sf::Color(158, 60, 60), buttonDull),
+                dull(sf::Color(100, 200, 100), buttonDull),
+                dull(sf::Color(80, 180, 80), buttonDull),
+                dull(sf::Color(40, 70, 40), textDull),
+                dull(sf::Color(76, 128, 76), textDull),
+                dull(sf::Color(60, 130, 60), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::SUNSET:
             return Theme(
-                sf::Color(255, 218, 185),      // Light square
-                sf::Color(255, 127, 80),       // Dark square
-                sf::Color(255, 215, 0, 120),   // Highlight
-                sf::Color(255, 250, 240),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(255, 248, 238),      // Panel light
-                sf::Color(255, 160, 122),      // Border
-                sf::Color(255, 200, 150),      // Divider
-                sf::Color(255, 99, 71),        // Primary
-                sf::Color(230, 79, 51),        // Primary hover
-                sf::Color(255, 235, 205),      // Secondary
-                sf::Color(255, 215, 185),      // Secondary hover
-                sf::Color(220, 60, 40),        // Danger
-                sf::Color(200, 40, 20),        // Danger hover
-                sf::Color(255, 165, 0),        // Success
-                sf::Color(235, 145, 0),        // Success hover
-                sf::Color(139, 69, 19),        // Primary text
-                sf::Color(205, 133, 63),       // Secondary text
-                sf::Color(255, 69, 0),         // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(255, 218, 185), boardDull),
+                dull(sf::Color(255, 127, 80), boardDull),
+                sf::Color(255, 215, 0, 120),
+                dull(sf::Color(255, 250, 240), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(255, 248, 238), uiDull),
+                dull(sf::Color(255, 160, 122), uiDull),
+                dull(sf::Color(255, 200, 150), uiDull),
+                dull(sf::Color(230, 110, 80), buttonDull),
+                dull(sf::Color(210, 90, 60), buttonDull),
+                dull(sf::Color(255, 235, 205), buttonDull),
+                dull(sf::Color(255, 215, 185), buttonDull),
+                dull(sf::Color(220, 80, 60), buttonDull),
+                dull(sf::Color(200, 60, 40), buttonDull),
+                dull(sf::Color(255, 150, 50), buttonDull),
+                dull(sf::Color(235, 130, 30), buttonDull),
+                dull(sf::Color(120, 80, 40), textDull),
+                dull(sf::Color(180, 120, 70), textDull),
+                dull(sf::Color(230, 100, 50), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::OCEAN_DEEP:
             return Theme(
-                sf::Color(176, 224, 230),      // Light square
-                sf::Color(0, 105, 148),        // Dark square
-                sf::Color(64, 224, 208, 120),  // Highlight
-                sf::Color(230, 245, 250),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(240, 248, 255),      // Panel light
-                sf::Color(100, 149, 237),      // Border
-                sf::Color(176, 196, 222),      // Divider
-                sf::Color(0, 119, 190),        // Primary
-                sf::Color(0, 99, 170),         // Primary hover
-                sf::Color(230, 242, 255),      // Secondary
-                sf::Color(210, 230, 250),      // Secondary hover
-                sf::Color(220, 20, 60),        // Danger
-                sf::Color(200, 0, 40),         // Danger hover
-                sf::Color(64, 224, 208),       // Success
-                sf::Color(44, 204, 188),       // Success hover
-                sf::Color(0, 51, 102),         // Primary text
-                sf::Color(70, 130, 180),       // Secondary text
-                sf::Color(30, 144, 255),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(176, 224, 230), boardDull),
+                dull(sf::Color(50, 120, 150), boardDull),
+                sf::Color(64, 224, 208, 120),
+                dull(sf::Color(230, 245, 250), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(240, 248, 255), uiDull),
+                dull(sf::Color(100, 149, 200), uiDull),
+                dull(sf::Color(150, 180, 210), uiDull),
+                dull(sf::Color(50, 130, 180), buttonDull),
+                dull(sf::Color(40, 110, 160), buttonDull),
+                dull(sf::Color(230, 242, 255), buttonDull),
+                dull(sf::Color(210, 230, 250), buttonDull),
+                dull(sf::Color(180, 60, 80), buttonDull),
+                dull(sf::Color(160, 40, 60), buttonDull),
+                dull(sf::Color(80, 180, 170), buttonDull),
+                dull(sf::Color(60, 160, 150), buttonDull),
+                dull(sf::Color(30, 60, 90), textDull),
+                dull(sf::Color(70, 130, 180), textDull),
+                dull(sf::Color(50, 140, 200), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::LAVA:
             return Theme(
-                sf::Color(50, 50, 50),         // Light square
-                sf::Color(25, 25, 25),         // Dark square
-                sf::Color(255, 69, 0, 150),    // Highlight
-                sf::Color(30, 30, 30),         // Background
-                sf::Color(40, 40, 40),         // Panel
-                sf::Color(50, 50, 50),         // Panel light
-                sf::Color(255, 69, 0),         // Border
-                sf::Color(139, 69, 19),        // Divider
-                sf::Color(255, 69, 0),         // Primary
-                sf::Color(220, 50, 0),         // Primary hover
-                sf::Color(60, 60, 60),         // Secondary
-                sf::Color(80, 80, 80),         // Secondary hover
-                sf::Color(178, 34, 34),        // Danger
-                sf::Color(158, 20, 20),        // Danger hover
-                sf::Color(255, 140, 0),        // Success
-                sf::Color(235, 120, 0),        // Success hover
-                sf::Color(255, 255, 224),      // Primary text
-                sf::Color(255, 165, 0),        // Secondary text
-                sf::Color(255, 99, 71),        // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(70, 70, 70), boardDull),
+                dull(sf::Color(40, 40, 40), boardDull),
+                sf::Color(255, 100, 50, 150),
+                dull(sf::Color(30, 30, 30), uiDull),
+                dull(sf::Color(40, 40, 40), uiDull),
+                dull(sf::Color(50, 50, 50), uiDull),
+                dull(sf::Color(180, 80, 30), uiDull),
+                dull(sf::Color(120, 80, 50), uiDull),
+                dull(sf::Color(200, 80, 30), buttonDull),
+                dull(sf::Color(180, 60, 20), buttonDull),
+                dull(sf::Color(60, 60, 60), buttonDull),
+                dull(sf::Color(75, 75, 75), buttonDull),
+                dull(sf::Color(180, 60, 60), buttonDull),
+                dull(sf::Color(160, 40, 40), buttonDull),
+                dull(sf::Color(220, 120, 50), buttonDull),
+                dull(sf::Color(200, 100, 30), buttonDull),
+                dull(sf::Color(200, 200, 180), textDull),
+                dull(sf::Color(220, 150, 80), textDull),
+                dull(sf::Color(230, 120, 70), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::ICE_PALACE:
             return Theme(
-                sf::Color(240, 248, 255),      // Light square
-                sf::Color(176, 224, 230),      // Dark square
-                sf::Color(173, 216, 230, 120), // Highlight
-                sf::Color(245, 255, 255),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 252, 255),      // Panel light
-                sf::Color(135, 206, 235),      // Border
-                sf::Color(176, 224, 230),      // Divider
-                sf::Color(100, 149, 237),      // Primary
-                sf::Color(70, 130, 220),       // Primary hover
-                sf::Color(240, 248, 255),      // Secondary
-                sf::Color(220, 235, 255),      // Secondary hover
-                sf::Color(138, 43, 226),       // Danger
-                sf::Color(118, 23, 206),       // Danger hover
-                sf::Color(135, 206, 250),      // Success
-                sf::Color(115, 186, 230),      // Success hover
-                sf::Color(25, 25, 112),        // Primary text
-                sf::Color(100, 149, 237),      // Secondary text
-                sf::Color(65, 105, 225),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(240, 248, 255), boardDull),
+                dull(sf::Color(176, 224, 230), boardDull),
+                sf::Color(173, 216, 230, 120),
+                dull(sf::Color(245, 255, 255), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 252, 255), uiDull),
+                dull(sf::Color(135, 206, 235), uiDull),
+                dull(sf::Color(176, 224, 230), uiDull),
+                dull(sf::Color(100, 149, 237), buttonDull),
+                dull(sf::Color(80, 130, 220), buttonDull),
+                dull(sf::Color(240, 248, 255), buttonDull),
+                dull(sf::Color(220, 235, 255), buttonDull),
+                dull(sf::Color(160, 80, 200), buttonDull),
+                dull(sf::Color(140, 60, 180), buttonDull),
+                dull(sf::Color(135, 206, 250), buttonDull),
+                dull(sf::Color(115, 186, 230), buttonDull),
+                dull(sf::Color(40, 50, 100), textDull),
+                dull(sf::Color(100, 149, 237), textDull),
+                dull(sf::Color(80, 130, 210), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::RETRO_ARCADE:
             return Theme(
-                sf::Color(255, 255, 100),      // Light square
-                sf::Color(255, 100, 255),      // Dark square
-                sf::Color(0, 255, 255, 150),   // Highlight
-                sf::Color(0, 0, 0),            // Background
-                sf::Color(20, 20, 40),         // Panel
-                sf::Color(30, 30, 50),         // Panel light
-                sf::Color(255, 0, 255),        // Border
-                sf::Color(0, 255, 255),        // Divider
-                sf::Color(255, 0, 128),        // Primary
-                sf::Color(220, 0, 108),        // Primary hover
-                sf::Color(40, 40, 60),         // Secondary
-                sf::Color(60, 60, 80),         // Secondary hover
-                sf::Color(255, 50, 50),        // Danger
-                sf::Color(235, 30, 30),        // Danger hover
-                sf::Color(0, 255, 128),        // Success
-                sf::Color(0, 235, 108),        // Success hover
-                sf::Color(255, 255, 255),      // Primary text
-                sf::Color(0, 255, 255),        // Secondary text
-                sf::Color(255, 255, 0),        // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(200, 200, 120), boardDull),
+                dull(sf::Color(200, 120, 200), boardDull),
+                sf::Color(100, 200, 200, 150),
+                dull(sf::Color(10, 10, 10), uiDull),
+                dull(sf::Color(25, 25, 40), uiDull),
+                dull(sf::Color(35, 35, 50), uiDull),
+                dull(sf::Color(180, 50, 180), uiDull),
+                dull(sf::Color(50, 180, 180), uiDull),
+                dull(sf::Color(200, 50, 150), buttonDull),
+                dull(sf::Color(180, 40, 130), buttonDull),
+                dull(sf::Color(40, 40, 60), buttonDull),
+                dull(sf::Color(55, 55, 75), buttonDull),
+                dull(sf::Color(220, 80, 80), buttonDull),
+                dull(sf::Color(200, 60, 60), buttonDull),
+                dull(sf::Color(80, 200, 150), buttonDull),
+                dull(sf::Color(60, 180, 130), buttonDull),
+                dull(sf::Color(200, 200, 200), textDull),
+                dull(sf::Color(100, 200, 200), textDull),
+                dull(sf::Color(200, 200, 100), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::LAVENDER_DREAM:
             return Theme(
-                sf::Color(243, 229, 245),      // Light square
-                sf::Color(216, 191, 216),      // Dark square
-                sf::Color(221, 160, 221, 120), // Highlight
-                sf::Color(250, 245, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(248, 243, 250),      // Panel light
-                sf::Color(216, 191, 216),      // Border
-                sf::Color(230, 210, 235),      // Divider
-                sf::Color(147, 112, 219),      // Primary
-                sf::Color(127, 92, 199),       // Primary hover
-                sf::Color(245, 235, 250),      // Secondary
-                sf::Color(230, 215, 240),      // Secondary hover
-                sf::Color(199, 21, 133),       // Danger
-                sf::Color(179, 1, 113),        // Danger hover
-                sf::Color(186, 85, 211),       // Success
-                sf::Color(166, 65, 191),       // Success hover
-                sf::Color(75, 0, 130),         // Primary text
-                sf::Color(147, 112, 219),      // Secondary text
-                sf::Color(138, 43, 226),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(243, 229, 245), boardDull),
+                dull(sf::Color(216, 191, 216), boardDull),
+                sf::Color(221, 160, 221, 120),
+                dull(sf::Color(250, 245, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(248, 243, 250), uiDull),
+                dull(sf::Color(216, 191, 216), uiDull),
+                dull(sf::Color(230, 210, 235), uiDull),
+                dull(sf::Color(147, 112, 219), buttonDull),
+                dull(sf::Color(127, 92, 199), buttonDull),
+                dull(sf::Color(245, 235, 250), buttonDull),
+                dull(sf::Color(230, 215, 240), buttonDull),
+                dull(sf::Color(180, 60, 140), buttonDull),
+                dull(sf::Color(160, 40, 120), buttonDull),
+                dull(sf::Color(186, 120, 200), buttonDull),
+                dull(sf::Color(166, 100, 180), buttonDull),
+                dull(sf::Color(90, 40, 120), textDull),
+                dull(sf::Color(147, 112, 219), textDull),
+                dull(sf::Color(150, 90, 200), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::DESERT_SAND:
             return Theme(
-                sf::Color(244, 228, 188),      // Light square
-                sf::Color(210, 180, 140),      // Dark square
-                sf::Color(255, 215, 0, 100),   // Highlight
-                sf::Color(250, 240, 220),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(252, 245, 230),      // Panel light
-                sf::Color(205, 175, 135),      // Border
-                sf::Color(222, 200, 170),      // Divider
-                sf::Color(184, 134, 11),       // Primary
-                sf::Color(164, 114, 0),        // Primary hover
-                sf::Color(245, 235, 215),      // Secondary
-                sf::Color(230, 220, 200),      // Secondary hover
-                sf::Color(178, 34, 34),        // Danger
-                sf::Color(158, 20, 20),        // Danger hover
-                sf::Color(189, 183, 107),      // Success
-                sf::Color(169, 163, 87),       // Success hover
-                sf::Color(101, 67, 33),        // Primary text
-                sf::Color(139, 90, 43),        // Secondary text
-                sf::Color(184, 134, 11),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(244, 228, 188), boardDull),
+                dull(sf::Color(210, 180, 140), boardDull),
+                sf::Color(255, 215, 0, 100),
+                dull(sf::Color(250, 240, 220), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(252, 245, 230), uiDull),
+                dull(sf::Color(205, 175, 135), uiDull),
+                dull(sf::Color(222, 200, 170), uiDull),
+                dull(sf::Color(170, 130, 60), buttonDull),
+                dull(sf::Color(150, 110, 40), buttonDull),
+                dull(sf::Color(245, 235, 215), buttonDull),
+                dull(sf::Color(230, 220, 200), buttonDull),
+                dull(sf::Color(180, 70, 70), buttonDull),
+                dull(sf::Color(160, 50, 50), buttonDull),
+                dull(sf::Color(180, 170, 110), buttonDull),
+                dull(sf::Color(160, 150, 90), buttonDull),
+                dull(sf::Color(110, 80, 50), textDull),
+                dull(sf::Color(139, 100, 60), textDull),
+                dull(sf::Color(170, 130, 50), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::MINT_CHOCOLATE:
             return Theme(
-                sf::Color(245, 255, 250),      // Light square
-                sf::Color(152, 251, 152),      // Dark square
-                sf::Color(189, 252, 201, 120), // Highlight
-                sf::Color(248, 255, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(250, 255, 253),      // Panel light
-                sf::Color(152, 251, 152),      // Border
-                sf::Color(200, 252, 200),      // Divider
-                sf::Color(72, 201, 176),       // Primary
-                sf::Color(52, 181, 156),       // Primary hover
-                sf::Color(245, 255, 250),      // Secondary
-                sf::Color(230, 250, 240),      // Secondary hover
-                sf::Color(199, 21, 133),       // Danger
-                sf::Color(179, 1, 113),        // Danger hover
-                sf::Color(144, 238, 144),      // Success
-                sf::Color(124, 218, 124),      // Success hover
-                sf::Color(47, 79, 79),         // Primary text
-                sf::Color(60, 179, 113),       // Secondary text
-                sf::Color(72, 201, 176),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(245, 255, 250), boardDull),
+                dull(sf::Color(152, 220, 180), boardDull),
+                sf::Color(150, 220, 180, 120),
+                dull(sf::Color(248, 255, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(250, 255, 253), uiDull),
+                dull(sf::Color(152, 220, 180), uiDull),
+                dull(sf::Color(180, 230, 200), uiDull),
+                dull(sf::Color(80, 180, 160), buttonDull),
+                dull(sf::Color(60, 160, 140), buttonDull),
+                dull(sf::Color(245, 255, 250), buttonDull),
+                dull(sf::Color(230, 250, 240), buttonDull),
+                dull(sf::Color(180, 60, 130), buttonDull),
+                dull(sf::Color(160, 40, 110), buttonDull),
+                dull(sf::Color(120, 200, 150), buttonDull),
+                dull(sf::Color(100, 180, 130), buttonDull),
+                dull(sf::Color(60, 90, 80), textDull),
+                dull(sf::Color(80, 160, 120), textDull),
+                dull(sf::Color(80, 180, 150), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::VAMPIRE:
             return Theme(
-                sf::Color(60, 20, 20),         // Light square
-                sf::Color(30, 10, 10),         // Dark square
-                sf::Color(139, 0, 0, 150),     // Highlight
-                sf::Color(15, 5, 5),           // Background
-                sf::Color(25, 10, 10),         // Panel
-                sf::Color(40, 15, 15),         // Panel light
-                sf::Color(139, 0, 0),          // Border
-                sf::Color(70, 20, 20),         // Divider
-                sf::Color(139, 0, 0),          // Primary
-                sf::Color(119, 0, 0),          // Primary hover
-                sf::Color(50, 20, 20),         // Secondary
-                sf::Color(70, 30, 30),         // Secondary hover
-                sf::Color(220, 20, 60),        // Danger
-                sf::Color(200, 0, 40),         // Danger hover
-                sf::Color(178, 34, 34),        // Success
-                sf::Color(158, 20, 20),        // Success hover
-                sf::Color(255, 215, 215),      // Primary text
-                sf::Color(205, 92, 92),        // Secondary text
-                sf::Color(220, 20, 60),        // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(80, 50, 50), boardDull),
+                dull(sf::Color(50, 30, 30), boardDull),
+                sf::Color(150, 50, 50, 150),
+                dull(sf::Color(20, 15, 15), uiDull),
+                dull(sf::Color(35, 25, 25), uiDull),
+                dull(sf::Color(50, 35, 35), uiDull),
+                dull(sf::Color(120, 40, 40), uiDull),
+                dull(sf::Color(80, 40, 40), uiDull),
+                dull(sf::Color(130, 40, 40), buttonDull),
+                dull(sf::Color(110, 30, 30), buttonDull),
+                dull(sf::Color(60, 40, 40), buttonDull),
+                dull(sf::Color(75, 50, 50), buttonDull),
+                dull(sf::Color(180, 60, 80), buttonDull),
+                dull(sf::Color(160, 40, 60), buttonDull),
+                dull(sf::Color(150, 70, 70), buttonDull),
+                dull(sf::Color(130, 50, 50), buttonDull),
+                dull(sf::Color(200, 180, 180), textDull),
+                dull(sf::Color(180, 120, 120), textDull),
+                dull(sf::Color(180, 80, 100), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::GOLD_RUSH:
             return Theme(
-                sf::Color(255, 248, 220),      // Light square
-                sf::Color(218, 165, 32),       // Dark square
-                sf::Color(255, 215, 0, 120),   // Highlight
-                sf::Color(255, 253, 240),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(255, 250, 235),      // Panel light
-                sf::Color(218, 165, 32),       // Border
-                sf::Color(240, 200, 100),      // Divider
-                sf::Color(184, 134, 11),       // Primary
-                sf::Color(164, 114, 0),        // Primary hover
-                sf::Color(255, 250, 205),      // Secondary
-                sf::Color(250, 235, 180),      // Secondary hover
-                sf::Color(178, 34, 34),        // Danger
-                sf::Color(158, 20, 20),        // Danger hover
-                sf::Color(255, 215, 0),        // Success
-                sf::Color(235, 195, 0),        // Success hover
-                sf::Color(101, 67, 33),        // Primary text
-                sf::Color(184, 134, 11),       // Secondary text
-                sf::Color(218, 165, 32),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(255, 248, 220), boardDull),
+                dull(sf::Color(218, 165, 80), boardDull),
+                sf::Color(230, 190, 50, 120),
+                dull(sf::Color(255, 253, 240), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(255, 250, 235), uiDull),
+                dull(sf::Color(218, 165, 80), uiDull),
+                dull(sf::Color(230, 185, 110), uiDull),
+                dull(sf::Color(180, 140, 50), buttonDull),
+                dull(sf::Color(160, 120, 30), buttonDull),
+                dull(sf::Color(255, 250, 205), buttonDull),
+                dull(sf::Color(245, 230, 180), buttonDull),
+                dull(sf::Color(180, 70, 70), buttonDull),
+                dull(sf::Color(160, 50, 50), buttonDull),
+                dull(sf::Color(230, 190, 50), buttonDull),
+                dull(sf::Color(210, 170, 30), buttonDull),
+                dull(sf::Color(110, 80, 40), textDull),
+                dull(sf::Color(170, 130, 50), textDull),
+                dull(sf::Color(200, 155, 60), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::AURORA:
             return Theme(
-                sf::Color(230, 255, 250),      // Light square
-                sf::Color(152, 255, 204),      // Dark square
-                sf::Color(127, 255, 212, 120), // Highlight
-                sf::Color(240, 255, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(245, 255, 253),      // Panel light
-                sf::Color(127, 255, 212),      // Border
-                sf::Color(175, 255, 230),      // Divider
-                sf::Color(64, 224, 208),       // Primary
-                sf::Color(44, 204, 188),       // Primary hover
-                sf::Color(240, 255, 250),      // Secondary
-                sf::Color(220, 250, 240),      // Secondary hover
-                sf::Color(255, 20, 147),       // Danger
-                sf::Color(235, 0, 127),        // Danger hover
-                sf::Color(0, 255, 127),        // Success
-                sf::Color(0, 235, 107),        // Success hover
-                sf::Color(0, 100, 100),        // Primary text
-                sf::Color(64, 224, 208),       // Secondary text
-                sf::Color(72, 209, 204),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(230, 255, 250), boardDull),
+                dull(sf::Color(152, 230, 200), boardDull),
+                sf::Color(127, 230, 200, 120),
+                dull(sf::Color(240, 255, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(245, 255, 253), uiDull),
+                dull(sf::Color(150, 220, 200), uiDull),
+                dull(sf::Color(175, 235, 215), uiDull),
+                dull(sf::Color(80, 200, 180), buttonDull),
+                dull(sf::Color(60, 180, 160), buttonDull),
+                dull(sf::Color(240, 255, 250), buttonDull),
+                dull(sf::Color(220, 245, 235), buttonDull),
+                dull(sf::Color(200, 70, 130), buttonDull),
+                dull(sf::Color(180, 50, 110), buttonDull),
+                dull(sf::Color(100, 220, 150), buttonDull),
+                dull(sf::Color(80, 200, 130), buttonDull),
+                dull(sf::Color(40, 100, 100), textDull),
+                dull(sf::Color(80, 200, 180), textDull),
+                dull(sf::Color(90, 190, 175), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::NOIR:
             return Theme(
-                sf::Color(90, 90, 90),         // Light square
-                sf::Color(40, 40, 40),         // Dark square
-                sf::Color(200, 200, 200, 100), // Highlight
-                sf::Color(20, 20, 20),         // Background
-                sf::Color(30, 30, 30),         // Panel
-                sf::Color(45, 45, 45),         // Panel light
-                sf::Color(100, 100, 100),      // Border
-                sf::Color(60, 60, 60),         // Divider
-                sf::Color(150, 150, 150),      // Primary
-                sf::Color(130, 130, 130),      // Primary hover
-                sf::Color(50, 50, 50),         // Secondary
-                sf::Color(70, 70, 70),         // Secondary hover
-                sf::Color(180, 180, 180),      // Danger
-                sf::Color(160, 160, 160),      // Danger hover
-                sf::Color(200, 200, 200),      // Success
-                sf::Color(180, 180, 180),      // Success hover
-                sf::Color(220, 220, 220),      // Primary text
-                sf::Color(150, 150, 150),      // Secondary text
-                sf::Color(200, 200, 200),      // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(100, 100, 100), boardDull),
+                dull(sf::Color(55, 55, 55), boardDull),
+                sf::Color(180, 180, 180, 100),
+                dull(sf::Color(25, 25, 25), uiDull),
+                dull(sf::Color(40, 40, 40), uiDull),
+                dull(sf::Color(55, 55, 55), uiDull),
+                dull(sf::Color(100, 100, 100), uiDull),
+                dull(sf::Color(70, 70, 70), uiDull),
+                dull(sf::Color(130, 130, 130), buttonDull),
+                dull(sf::Color(110, 110, 110), buttonDull),
+                dull(sf::Color(60, 60, 60), buttonDull),
+                dull(sf::Color(80, 80, 80), buttonDull),
+                dull(sf::Color(160, 160, 160), buttonDull),
+                dull(sf::Color(140, 140, 140), buttonDull),
+                dull(sf::Color(180, 180, 180), buttonDull),
+                dull(sf::Color(160, 160, 160), buttonDull),
+                dull(sf::Color(200, 200, 200), textDull),
+                dull(sf::Color(140, 140, 140), textDull),
+                dull(sf::Color(180, 180, 180), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::BUBBLEGUM:
             return Theme(
-                sf::Color(255, 240, 245),      // Light square
-                sf::Color(255, 192, 203),      // Dark square
-                sf::Color(255, 105, 180, 120), // Highlight
-                sf::Color(255, 250, 252),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(255, 245, 250),      // Panel light
-                sf::Color(255, 182, 193),      // Border
-                sf::Color(255, 218, 224),      // Divider
-                sf::Color(255, 20, 147),       // Primary
-                sf::Color(235, 0, 127),        // Primary hover
-                sf::Color(255, 240, 245),      // Secondary
-                sf::Color(255, 220, 230),      // Secondary hover
-                sf::Color(220, 20, 60),        // Danger
-                sf::Color(200, 0, 40),         // Danger hover
-                sf::Color(255, 182, 193),      // Success
-                sf::Color(235, 162, 173),      // Success hover
-                sf::Color(199, 21, 133),       // Primary text
-                sf::Color(255, 105, 180),      // Secondary text
-                sf::Color(255, 20, 147),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(255, 240, 245), boardDull),
+                dull(sf::Color(255, 192, 203), boardDull),
+                sf::Color(255, 150, 200, 120),
+                dull(sf::Color(255, 250, 252), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(255, 245, 250), uiDull),
+                dull(sf::Color(255, 182, 193), uiDull),
+                dull(sf::Color(255, 218, 224), uiDull),
+                dull(sf::Color(230, 80, 150), buttonDull),
+                dull(sf::Color(210, 60, 130), buttonDull),
+                dull(sf::Color(255, 240, 245), buttonDull),
+                dull(sf::Color(255, 220, 230), buttonDull),
+                dull(sf::Color(200, 60, 90), buttonDull),
+                dull(sf::Color(180, 40, 70), buttonDull),
+                dull(sf::Color(255, 182, 193), buttonDull),
+                dull(sf::Color(235, 162, 173), buttonDull),
+                dull(sf::Color(160, 60, 110), textDull),
+                dull(sf::Color(220, 120, 160), textDull),
+                dull(sf::Color(230, 80, 140), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::TOXIC:
             return Theme(
-                sf::Color(173, 255, 47),       // Light square
-                sf::Color(50, 205, 50),        // Dark square
-                sf::Color(0, 255, 0, 150),     // Highlight
-                sf::Color(20, 30, 20),         // Background
-                sf::Color(30, 40, 30),         // Panel
-                sf::Color(40, 50, 40),         // Panel light
-                sf::Color(0, 255, 0),          // Border
-                sf::Color(50, 205, 50),        // Divider
-                sf::Color(0, 250, 0),          // Primary
-                sf::Color(0, 220, 0),          // Primary hover
-                sf::Color(40, 50, 40),         // Secondary
-                sf::Color(60, 70, 60),         // Secondary hover
-                sf::Color(255, 50, 50),        // Danger
-                sf::Color(235, 30, 30),        // Danger hover
-                sf::Color(50, 205, 50),        // Success
-                sf::Color(30, 185, 30),        // Success hover
-                sf::Color(173, 255, 47),       // Primary text
-                sf::Color(124, 252, 0),        // Secondary text
-                sf::Color(0, 255, 0),          // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(180, 220, 100), boardDull),
+                dull(sf::Color(80, 180, 80), boardDull),
+                sf::Color(100, 200, 100, 150),
+                dull(sf::Color(25, 35, 25), uiDull),
+                dull(sf::Color(35, 45, 35), uiDull),
+                dull(sf::Color(45, 55, 45), uiDull),
+                dull(sf::Color(80, 180, 80), uiDull),
+                dull(sf::Color(80, 170, 80), uiDull),
+                dull(sf::Color(80, 200, 80), buttonDull),
+                dull(sf::Color(60, 180, 60), buttonDull),
+                dull(sf::Color(45, 55, 45), buttonDull),
+                dull(sf::Color(60, 70, 60), buttonDull),
+                dull(sf::Color(200, 80, 80), buttonDull),
+                dull(sf::Color(180, 60, 60), buttonDull),
+                dull(sf::Color(80, 180, 80), buttonDull),
+                dull(sf::Color(60, 160, 60), buttonDull),
+                dull(sf::Color(150, 200, 100), textDull),
+                dull(sf::Color(120, 200, 80), textDull),
+                dull(sf::Color(100, 200, 100), textDull),
+                sf::Color(220, 255, 220)
             );
 
         case ThemeType::ROYAL_PURPLE:
             return Theme(
-                sf::Color(230, 220, 240),      // Light square
-                sf::Color(147, 112, 219),      // Dark square
-                sf::Color(138, 43, 226, 120),  // Highlight
-                sf::Color(245, 240, 250),      // Background
-                sf::Color(255, 255, 255),      // Panel
-                sf::Color(250, 245, 255),      // Panel light
-                sf::Color(147, 112, 219),      // Border
-                sf::Color(186, 170, 230),      // Divider
-                sf::Color(75, 0, 130),         // Primary
-                sf::Color(55, 0, 110),         // Primary hover
-                sf::Color(240, 230, 250),      // Secondary
-                sf::Color(225, 210, 240),      // Secondary hover
-                sf::Color(199, 21, 133),       // Danger
-                sf::Color(179, 1, 113),        // Danger hover
-                sf::Color(138, 43, 226),       // Success
-                sf::Color(118, 23, 206),       // Success hover
-                sf::Color(48, 25, 52),         // Primary text
-                sf::Color(102, 51, 153),       // Secondary text
-                sf::Color(138, 43, 226),       // Accent text
-                sf::Color(255, 255, 255)       // Text on dark
+                dull(sf::Color(230, 220, 240), boardDull),
+                dull(sf::Color(147, 112, 180), boardDull),
+                sf::Color(150, 100, 200, 120),
+                dull(sf::Color(245, 240, 250), uiDull),
+                dull(sf::Color(255, 255, 255), uiDull),
+                dull(sf::Color(250, 245, 255), uiDull),
+                dull(sf::Color(147, 112, 180), uiDull),
+                dull(sf::Color(180, 160, 210), uiDull),
+                dull(sf::Color(100, 50, 150), buttonDull),
+                dull(sf::Color(80, 40, 130), buttonDull),
+                dull(sf::Color(240, 230, 250), buttonDull),
+                dull(sf::Color(225, 210, 240), buttonDull),
+                dull(sf::Color(180, 60, 140), buttonDull),
+                dull(sf::Color(160, 40, 120), buttonDull),
+                dull(sf::Color(150, 90, 200), buttonDull),
+                dull(sf::Color(130, 70, 180), buttonDull),
+                dull(sf::Color(70, 40, 90), textDull),
+                dull(sf::Color(120, 80, 160), textDull),
+                dull(sf::Color(140, 90, 200), textDull),
+                sf::Color(255, 255, 255)
             );
 
         case ThemeType::MATRIX:
             return Theme(
-                sf::Color(0, 40, 0),           // Light square
-                sf::Color(0, 20, 0),           // Dark square
-                sf::Color(0, 255, 0, 150),     // Highlight
-                sf::Color(0, 0, 0),            // Background
-                sf::Color(0, 15, 0),           // Panel
-                sf::Color(0, 25, 0),           // Panel light
-                sf::Color(0, 255, 0),          // Border
-                sf::Color(0, 100, 0),          // Divider
-                sf::Color(0, 255, 0),          // Primary
-                sf::Color(0, 220, 0),          // Primary hover
-                sf::Color(0, 30, 0),           // Secondary
-                sf::Color(0, 50, 0),           // Secondary hover
-                sf::Color(255, 0, 0),          // Danger
-                sf::Color(220, 0, 0),          // Danger hover
-                sf::Color(0, 200, 0),          // Success
-                sf::Color(0, 170, 0),          // Success hover
-                sf::Color(0, 255, 0),          // Primary text
-                sf::Color(0, 200, 0),          // Secondary text
-                sf::Color(0, 255, 100),        // Accent text
-                sf::Color(0, 255, 0)           // Text on dark
+                dull(sf::Color(20, 60, 20), boardDull),
+                dull(sf::Color(10, 35, 10), boardDull),
+                sf::Color(50, 200, 50, 150),
+                dull(sf::Color(5, 5, 5), uiDull),
+                dull(sf::Color(10, 20, 10), uiDull),
+                dull(sf::Color(15, 30, 15), uiDull),
+                dull(sf::Color(50, 180, 50), uiDull),
+                dull(sf::Color(40, 130, 40), uiDull),
+                dull(sf::Color(50, 200, 50), buttonDull),
+                dull(sf::Color(40, 180, 40), buttonDull),
+                dull(sf::Color(15, 35, 15), buttonDull),
+                dull(sf::Color(20, 50, 20), buttonDull),
+                dull(sf::Color(200, 50, 50), buttonDull),
+                dull(sf::Color(180, 40, 40), buttonDull),
+                dull(sf::Color(50, 180, 50), buttonDull),
+                dull(sf::Color(40, 160, 40), buttonDull),
+                dull(sf::Color(80, 200, 80), textDull),
+                dull(sf::Color(50, 180, 50), textDull),
+                dull(sf::Color(60, 200, 90), textDull),
+                sf::Color(100, 255, 100)
             );
 
         default:
