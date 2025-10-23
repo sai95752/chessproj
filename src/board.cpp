@@ -70,15 +70,17 @@ bool Board:: movePiece(int startRow, int startCol, int endRow, int endCol) {
             } else if(piece.color == PIECE_COLOR::BLACK) {
                 blackKingMoved = true;
             }
-            
+
+            // Handle castling - move the rook
             if(abs(endCol - startCol) == 2) {
-                if(endCol > startCol) {
-                    int rookRow = startRow;
-                    movePiece(rookRow, 7, rookRow, endCol - 1);
-                }
-            } else {
                 int rookRow = startRow;
-                movePiece(rookRow, 0, rookRow, endCol + 1);
+                if(endCol > startCol) {
+                    // Kingside castling - move rook from h-file to f-file
+                    movePiece(rookRow, 7, rookRow, endCol - 1);
+                } else {
+                    // Queenside castling - move rook from a-file to d-file
+                    movePiece(rookRow, 0, rookRow, endCol + 1);
+                }
             }
         }
         

@@ -25,6 +25,7 @@ private:
     static bool isPathClear(const Board& board, int fromRow, int fromCol, int toRow, int toCol);
     static bool isWithinBounds(int row, int col);
     static std::pair<int, int> findKing(const Board& board, PIECE_COLOR color);
+    static bool isPawnAttacking(const Board& board, int pawnRow, int pawnCol, int targetRow, int targetCol);
 public:
     static bool isValidMove(const Board& board, int fromRow, int fromCol, int toRow, int toCol);
     static bool isKingInCheck(const Board& board, PIECE_COLOR kingColor);

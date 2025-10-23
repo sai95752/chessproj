@@ -181,8 +181,19 @@ std::pair<int, int> Validator::findKing(const Board &board, PIECE_COLOR color) {
     return {-1, -1};
 }
 
+bool Validator::isPawnAttacking(const Board& board, int pawnRow, int pawnCol, int targetRow, int targetCol) {
+    Piece pawn = board.getPiece(pawnRow, pawnCol);
+    int dir = (pawn.color == PIECE_COLOR::WHITE) ? -1 : 1;
+    int rowDiff = targetRow - pawnRow;
+    int colDiff = abs(targetCol - pawnCol);
+    // Pawn attacks diagonally one square
+    return (rowDiff == dir && colDiff == 1);
+}
+
 bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
     auto [kingRow, kingCol] = findKing(board, kingColor);
+    if(kingRow == -1) return false;  // King not found (shouldn't happen in valid game)
+
     PIECE_COLOR opponent = (kingColor == PIECE_COLOR::WHITE) ? PIECE_COLOR::BLACK : PIECE_COLOR::WHITE;
     for(int row = 0; row < 8; row++) {
         for(int col = 0; col < 8; col++) {
@@ -190,11 +201,12 @@ bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
             if(piece.isEmpty() || piece.color != opponent) {
                 continue;
             }
-            
+
             bool canAttack = false;
             switch (piece.type) {
                 case PIECE_TYPE::PAWN:
-                    canAttack = isValidPawnMove(board, row, col, kingRow, kingCol);
+                    // Use specialized pawn attack check to avoid empty square issues
+                    canAttack = isPawnAttacking(board, row, col, kingRow, kingCol);
                     break;
                 case PIECE_TYPE::ROOK:
                     canAttack = isValidRookMove(board, row, col, kingRow, kingCol);
@@ -209,7 +221,8 @@ bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
                     canAttack = isValidQueenMove(board, row, col, kingRow, kingCol);
                     break;
                 case PIECE_TYPE::KING:
-                    canAttack = isValidKingMove(board, row, col, kingRow, kingCol);
+                    // Direct distance check to avoid recursion
+                    canAttack = (abs(row - kingRow) <= 1 && abs(col - kingCol) <= 1 && (row != kingRow || col != kingCol));
                     break;
                 default:
                     break;

@@ -15,6 +15,7 @@ private:
     
     //dynamic resize
     float SQUARE_SIZE;
+    float BOARD_OFFSET_X;
     
     
     //consts
@@ -26,10 +27,13 @@ private:
     sf::Color LIGHT_COLOR;
     sf::Color DARK_COLOR;
     sf::Color HIGHLIGHT_COLOR;
+    sf::Color PIECE_WHITE_COLOR;
+    sf::Color PIECE_BLACK_COLOR;
 
 public:
     //constrcutor -> takes in window object
     Renderer(const sf::RenderWindow& window, Theme& theme);
+    void refreshTheme(const Theme& theme);
     
     void draw(sf::RenderWindow& window, const Board& board);
     void drawBoard(sf::RenderWindow& window);
@@ -41,7 +45,10 @@ public:
     
     void updateSize(const sf::RenderWindow& window);
     float getSquareSize() const { return SQUARE_SIZE; }
+    float getBoardOffsetX() const { return BOARD_OFFSET_X; }
     
     
     void drawGameOver(sf::RenderWindow& window, GAME_STATE state, PIECE_COLOR loser);
+    
 };
+
