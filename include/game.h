@@ -32,7 +32,7 @@ public:
     Game();
     
     void handleClick(int row, int col);
-    void handlePromotionClick(const sf::RenderWindow& window, int mouseX, int mouseY, const Renderer& renderer);
+    void handlePromotion(PIECE_TYPE choice);
     
     
     const Board& getBoard() const {return board;}

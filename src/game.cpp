@@ -104,9 +104,8 @@ void Game::checkPawnPromotion(int row, int col) {
     }
 }
 
-void Game::handlePromotionClick(const sf::RenderWindow& window, int mouseX, int mouseY, const Renderer &renderer) {
+void Game::handlePromotion(PIECE_TYPE choice) {
     if(!awaitingPromotion) return;
-    PIECE_TYPE choice = renderer.getPromotionChoice(window, mouseX, mouseY, promotionColor);
     if(choice != PIECE_TYPE::NONE && choice != PIECE_TYPE::PAWN) {
         Piece promotedPiece(choice, promotionColor);
         board.setPiece(promotionRow, promotionCol, promotedPiece);

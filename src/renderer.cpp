@@ -22,6 +22,25 @@ Renderer::Renderer(const sf::RenderWindow& window, Theme& theme)
     lightSquare.setFillColor(dulledLight);
     darkSquare.setFillColor(dulledDark);
 
+    // Load textures
+    bool lightLoaded = lightTexture.loadFromFile("assets/textures/light_wood.jpg");
+    bool darkLoaded = darkTexture.loadFromFile("assets/textures/dark_wood.jpg");
+
+    if(lightLoaded && darkLoaded) {
+        texturesLoaded = true;
+        lightTexture.setRepeated(true);
+        darkTexture.setRepeated(true);
+        lightSquare.setTexture(&lightTexture);
+        darkSquare.setTexture(&darkTexture);
+        std::cout << "Board textures loaded successfully." << std::endl;
+    } else {
+        std::cout << "Texture loading failed: ";
+        if(!lightLoaded) std::cout << "light_wood.jpg ";
+        if(!darkLoaded) std::cout << "dark_wood.jpg ";
+        std::cout << std::endl;
+        std::cout << "Using solid colors instead." << std::endl;
+    }
+
     // Derive piece colors with smaller offsets and then dull slightly
     auto adjust = [&](sf::Color c, int delta) {
         return sf::Color(
@@ -32,7 +51,7 @@ Renderer::Renderer(const sf::RenderWindow& window, Theme& theme)
     };
     PIECE_WHITE_COLOR = sf::Color::White;
     PIECE_BLACK_COLOR = sf::Color::Black;
-    
+
     if(font.openFromFile("assets/fonts/DejaVuSans.ttf")) {
         fontLoaded = true;
         std::cout << "Pieces loaded successfully.";

@@ -3,6 +3,7 @@
 #include <TGUI/Backend/SFML-Graphics.hpp>
 #include <functional>
 #include "theme.h"
+#include "piece.h"
 
 enum class MENU_CHOICE {
     NONE,
@@ -22,7 +23,6 @@ private:
     bool themeChanged;
 
     void createMainMenuView();
-    void showMessage(const std::string& title, const std::string& message);
     void showSettingsDialog();
 
 public:
@@ -39,7 +39,6 @@ public:
     void setThemeType(ThemeType type) {selectedThemeType = type;}
     bool hasThemeChanged() const {return themeChanged;}
     void resetThemeChanged() {themeChanged = false;}
-    void reopenSettingsDialog() {showSettingsDialog();}
 };
 
 class GameUI {
@@ -50,13 +49,7 @@ private:
     tgui::Label::Ptr turnLabel;
     tgui::Label::Ptr statusLabel;
     tgui::Button::Ptr menuButton;
-    tgui::ListBox::Ptr moveHistoryList;
-    tgui::Button::Ptr firstMoveButton;
-    tgui::Button::Ptr prevMoveButton;
-    tgui::Button::Ptr nextMoveButton;
-    tgui::Button::Ptr lastMoveButton;
     std::function<void()> onMenuPressed;
-
 
 public:
     GameUI(tgui::Gui& gui, Theme& theme);
@@ -66,18 +59,8 @@ public:
 
     void updateTurn(const std::string& color);
     void updateStatus(const std::string& status);
-    void addMoveToHistory(const std::string& move);
-    void clearMoveHistory();
 
     void setMenuCallback(std::function<void()> callback);
-    void setNavigationCallbacks(
-        std::function<void()> onFirst,
-        std::function<void()> onPrev,
-        std::function<void()> onNext,
-        std::function<void()> onLast
-    );
     void showGameOverDialog(const std::string& message, std::function<void()> onRestart, std::function<void()> onQuit);
-
+    void showPromotionDialog(PIECE_COLOR color, std::function<void(PIECE_TYPE)> onSelect);
 };
-
-

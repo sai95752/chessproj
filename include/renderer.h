@@ -12,15 +12,20 @@ private:
     sf::RectangleShape lightSquare;
     sf::RectangleShape darkSquare;
     sf::RectangleShape highlightSquare;
-    
+
+    //textures
+    sf::Texture lightTexture;
+    sf::Texture darkTexture;
+    bool texturesLoaded = false;
+
     //dynamic resize
     float SQUARE_SIZE;
     float BOARD_OFFSET_X;
-    
-    
+
+
     //consts
     static constexpr int BOARD_SIZE = 8;
-    
+
     //colors
     sf::Font font;
     bool fontLoaded = false;
