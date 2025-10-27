@@ -11,15 +11,28 @@
 enum class APP_STATE {
     MAIN_MENU,
     PLAYING,
+    WAITING,
     PAUSED
 };
 
 int main() {
     sf::ContextSettings settings;
     settings.antiAliasingLevel = 8;  //smoother -> 8, ass -> 1
-    sf::RenderWindow window(sf::VideoMode({1200u, 800u}), "Chess", sf::State(sf::Style::Titlebar | sf::Style::Close), settings);
-    
-    
+
+    auto desktop = sf::VideoMode::getDesktopMode();
+    unsigned int WINDOW_HEIGHT = static_cast<unsigned int>(desktop.size.y * 0.85f); // 85% of screen height
+    unsigned int SQUARE_SIZE = WINDOW_HEIGHT / 8;
+    unsigned int BOARD_WIDTH = SQUARE_SIZE * 8;
+    unsigned int PANEL_WIDTH = static_cast<unsigned int>(BOARD_WIDTH * 0.425f); // Panel is 42.5% of board width
+    unsigned int WINDOW_WIDTH = PANEL_WIDTH + BOARD_WIDTH;
+
+    // Fixed, non-resizable window
+    sf::RenderWindow window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Chess", sf::State::Windowed, settings);
+
+    // Disable resizing by setting min and max size to same value
+    window.setMinimumSize(sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT));
+    window.setMaximumSize(sf::Vector2u(WINDOW_WIDTH, WINDOW_HEIGHT));
+
     window.setView(window.getDefaultView());
 
     Theme myTheme = getTheme(ThemeType::LIGHT);
@@ -50,12 +63,6 @@ int main() {
             
             if(event->is<sf::Event::Closed>()) {
                 window.close();
-            }
-            if(event->is<sf::Event::Resized>()) {
-                auto size = window.getSize();
-                sf::FloatRect visibleArea({0, 0}, {static_cast<float>(size.x), static_cast<float>(size.y)});
-                window.setView(sf::View(visibleArea));
-                renderer.updateSize(window);
             }
             if(appState == APP_STATE::PLAYING && event->is<sf::Event::MouseButtonPressed>()) {
                 auto mouseEvent = event->getIf<sf::Event::MouseButtonPressed>();
@@ -98,6 +105,7 @@ int main() {
                 menu->resetChoice();
             } else if(choice == MENU_CHOICE::MULTIPLAYER) {
                 menu->hide();
+                // lobbyUI->show();
                 gameUI->show();
                 appState = APP_STATE::PLAYING;
                 game = Game();
@@ -129,30 +137,42 @@ int main() {
             }
 
             if(game.getGameState() == GAME_STATE::CHECKMATE) {
-                std::string winner = game.getCurrentTurn() == PIECE_COLOR::WHITE ? "Black" : "White";
-                gameUI->showGameOverDialog(
-                                          "Checkmate! " + winner + " wins!",
-                                          [&] () {
-                                              game = Game();
-                                          },
-                                          [&] () {
-                                              gameUI->hide();
-                                              menu->show();
-                                              appState = APP_STATE::MAIN_MENU;
-                                          }
-                );
+                static bool gameOverDialogShown = false;
+                if(!gameOverDialogShown) {
+                    std::string winner = game.getCurrentTurn() == PIECE_COLOR::WHITE ? "Black" : "White";
+                    gameUI->showGameOverDialog(
+                        "Checkmate! " + winner + " wins!",
+                        [&] () {
+                            game = Game();
+                            gameOverDialogShown = false;
+                        },
+                        [&] () {
+                            gameUI->hide();
+                            menu->show();
+                            appState = APP_STATE::MAIN_MENU;
+                            gameOverDialogShown = false;
+                        }
+                    );
+                    gameOverDialogShown = true;
+                }
             } else if(game.getGameState() == GAME_STATE::STALEMATE) {
-                gameUI->showGameOverDialog(
-                                          "Stalemate! It's a draw!",
-                                          [&] () {
-                                              game = Game();
-                                          },
-                                          [&] () {
-                                              gameUI->hide();
-                                              menu->show();
-                                              appState = APP_STATE::MAIN_MENU;
-                                          }
-                );
+                static bool stalemateDialogShown = false;
+                if(!stalemateDialogShown) {
+                    gameUI->showGameOverDialog(
+                        "Stalemate! It's a draw!",
+                        [&] () {
+                            game = Game();
+                            stalemateDialogShown = false;
+                        },
+                        [&] () {
+                            gameUI->hide();
+                            menu->show();
+                            appState = APP_STATE::MAIN_MENU;
+                            stalemateDialogShown = false;
+                        }
+                    );
+                    stalemateDialogShown = true;
+                }
             }
         }
 

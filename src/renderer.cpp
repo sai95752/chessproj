@@ -22,7 +22,7 @@ Renderer::Renderer(const sf::RenderWindow& window, Theme& theme)
     lightSquare.setFillColor(dulledLight);
     darkSquare.setFillColor(dulledDark);
 
-    // Load textures
+    //wood_textures
     bool lightLoaded = lightTexture.loadFromFile("assets/textures/light_wood.jpg");
     bool darkLoaded = darkTexture.loadFromFile("assets/textures/dark_wood.jpg");
 
@@ -41,7 +41,7 @@ Renderer::Renderer(const sf::RenderWindow& window, Theme& theme)
         std::cout << "Using solid colors instead." << std::endl;
     }
 
-    // Derive piece colors with smaller offsets and then dull slightly
+    //derive piece
     auto adjust = [&](sf::Color c, int delta) {
         return sf::Color(
             static_cast<uint8_t>(clamp(static_cast<int>(c.r) + delta)),
@@ -126,10 +126,11 @@ void Renderer::drawHighlight(sf::RenderWindow& window, int row, int col) {
 
 void Renderer::updateSize(const sf::RenderWindow& window) {
     auto windowSize = window.getSize();
-    //board uses the height of the window
+    // Board uses full height of window
     SQUARE_SIZE = windowSize.y / 8.0f;
-    //position board on the right side, leaving 400px for left panel
-    BOARD_OFFSET_X = windowSize.x - (SQUARE_SIZE * 8);
+    // Panel width is calculated, board starts after panel
+    float boardWidth = SQUARE_SIZE * 8.0f;
+    BOARD_OFFSET_X = windowSize.x - boardWidth;
 
     lightSquare.setSize(sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));
     darkSquare.setSize(sf::Vector2f(SQUARE_SIZE, SQUARE_SIZE));

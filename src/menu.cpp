@@ -10,7 +10,6 @@ void Menu::createMainMenuView() {
     sf::Color textPrimary = theme.getTextPrimary();
     sf::Color textSecondary = theme.getTextSecondary();
 
-    // Full-screen container with themed background
     auto panel = tgui::Panel::create();
     panel->setSize("100%", "100%");
     panel->setPosition(0, 0);
@@ -18,7 +17,6 @@ void Menu::createMainMenuView() {
     panel->setVisible(false);
     gui.add(panel, "MainMenu");
 
-    // Main content container - no visible background, just content
     auto contentPanel = tgui::Panel::create();
     contentPanel->setSize(550, 650);
     contentPanel->setPosition("50%", "50%");
@@ -27,7 +25,6 @@ void Menu::createMainMenuView() {
     contentPanel->getRenderer()->setBorders(0);
     panel->add(contentPanel);
 
-    // Title - light, clean, prominent
     auto titleLabel = tgui::Label::create();
     titleLabel->setText("C H E S S");
     titleLabel->setPosition(275, 80);
@@ -36,7 +33,6 @@ void Menu::createMainMenuView() {
     titleLabel->getRenderer()->setTextColor(tgui::Color(textPrimary.r, textPrimary.g, textPrimary.b, 255));
     contentPanel->add(titleLabel);
 
-    // Subtitle - visible with proper contrast
     auto subtitleLabel = tgui::Label::create();
     subtitleLabel->setText("0.0.1");
     subtitleLabel->setPosition(275, 145);
@@ -45,21 +41,20 @@ void Menu::createMainMenuView() {
     subtitleLabel->getRenderer()->setTextColor(tgui::Color(textSecondary.r, textSecondary.g, textSecondary.b, 255));
     contentPanel->add(subtitleLabel);
 
-    // Calculate button colors based on theme
     sf::Color primaryBtnBg, primaryBtnHover, secondaryBtnBg, secondaryBtnHover;
-    if(panelColor.r > 200) { // Light theme
+    if(panelColor.r > 200) {
         primaryBtnBg = sf::Color(220, 220, 230, 255);
         primaryBtnHover = sf::Color(200, 200, 215, 255);
         secondaryBtnBg = sf::Color(235, 235, 242, 255);
         secondaryBtnHover = sf::Color(215, 215, 225, 255);
-    } else { // Dark theme
+    } else { 
         primaryBtnBg = sf::Color(55, 55, 62, 255);
         primaryBtnHover = sf::Color(75, 75, 85, 255);
         secondaryBtnBg = sf::Color(45, 45, 52, 255);
         secondaryBtnHover = sf::Color(65, 65, 75, 255);
     }
 
-    // Primary button - prominent, rounded
+    //primary button
     auto spBtn = tgui::Button::create();
     spBtn->setText("Single Player");
     spBtn->setSize(420, 56);
@@ -74,7 +69,6 @@ void Menu::createMainMenuView() {
     spBtn->onPress([this] { choice = MENU_CHOICE::SINGLE_PLAYER; });
     contentPanel->add(spBtn);
 
-    // Secondary buttons - same style, generous spacing
     auto createButton = [&](const std::string& text, float y) {
         auto btn = tgui::Button::create();
         btn->setText(text);
@@ -98,7 +92,7 @@ void Menu::createMainMenuView() {
     settingsBtn->onPress([this] { showSettingsDialog(); });
     contentPanel->add(settingsBtn);
 
-    // Quit button - minimal text link style
+    //quit
     auto quitBtn = tgui::Button::create();
     quitBtn->setText("Quit");
     quitBtn->setSize(100, 40);
@@ -235,11 +229,18 @@ void GameUI::show() {
     sf::Color textPrimary = theme.getTextPrimary();
     sf::Color textSecondary = theme.getTextSecondary();
 
-    // Theme-aware panel color
     sf::Color sidePanelBg = (panelBg.r > 200) ? sf::Color(240, 240, 245, 250) : sf::Color(18, 18, 22, 250);
 
+    // Calculate panel width to match board offset
+    auto view = gui.getTarget()->getView();
+    float windowWidth = view.getSize().x;
+    float windowHeight = view.getSize().y;
+    float squareSize = windowHeight / 8.0f;
+    float boardWidth = squareSize * 8.0f;
+    float panelWidth = windowWidth - boardWidth;
+
     auto leftPanel = tgui::Panel::create();
-    leftPanel->setSize(340, "100%");
+    leftPanel->setSize(panelWidth, "100%");
     leftPanel->setPosition(0, 0);
     leftPanel->getRenderer()->setBackgroundColor(tgui::Color(sidePanelBg.r, sidePanelBg.g, sidePanelBg.b, sidePanelBg.a));
     leftPanel->getRenderer()->setBorders(0);
@@ -247,7 +248,7 @@ void GameUI::show() {
 
     auto titleLabel = tgui::Label::create();
     titleLabel->setText("C H E S S");
-    titleLabel->setPosition(170, 35);
+    titleLabel->setPosition(panelWidth / 2.0f, 35);
     titleLabel->setOrigin(0.5f, 0.5f);
     titleLabel->setTextSize(24);
     titleLabel->getRenderer()->setTextColor(tgui::Color(textPrimary.r, textPrimary.g, textPrimary.b, 255));
@@ -304,7 +305,24 @@ void GameUI::setMenuCallback(std::function<void()> callback) {
 }
 
 void GameUI::showGameOverDialog(const std::string& message, std::function<void()> onRestart, std::function<void()> onQuit) {
+    sf::Color panelBg = theme.getUiPanel();
     sf::Color textPrimary = theme.getTextPrimary();
+
+    // Theme-aware colors
+    sf::Color dialogBg, btnBg, btnHover, primaryBtnBg, primaryBtnHover;
+    if(panelBg.r > 200) { // Light theme
+        dialogBg = sf::Color(245, 245, 250, 255);
+        btnBg = sf::Color(235, 235, 242, 255);
+        btnHover = sf::Color(215, 215, 225, 255);
+        primaryBtnBg = sf::Color(220, 220, 230, 255);
+        primaryBtnHover = sf::Color(200, 200, 215, 255);
+    } else { // Dark theme
+        dialogBg = sf::Color(28, 28, 32, 255);
+        btnBg = sf::Color(45, 45, 52, 255);
+        btnHover = sf::Color(65, 65, 75, 255);
+        primaryBtnBg = sf::Color(55, 55, 62, 255);
+        primaryBtnHover = sf::Color(75, 75, 85, 255);
+    }
 
     auto overlay = tgui::Panel::create();
     overlay->setSize("100%", "100%");
@@ -315,7 +333,7 @@ void GameUI::showGameOverDialog(const std::string& message, std::function<void()
     dialog->setSize(480, 260);
     dialog->setPosition("50%", "50%");
     dialog->setOrigin(0.5f, 0.5f);
-    dialog->getRenderer()->setBackgroundColor(tgui::Color(28, 28, 32, 255));
+    dialog->getRenderer()->setBackgroundColor(tgui::Color(dialogBg.r, dialogBg.g, dialogBg.b, dialogBg.a));
     dialog->getRenderer()->setBorders(0);
     dialog->getRenderer()->setRoundedBorderRadius(16);
     overlay->add(dialog);
@@ -333,8 +351,8 @@ void GameUI::showGameOverDialog(const std::string& message, std::function<void()
     restartBtn->setSize(200, 50);
     restartBtn->setPosition(40, 165);
     restartBtn->setTextSize(14);
-    restartBtn->getRenderer()->setBackgroundColor(tgui::Color(55, 55, 62, 255));
-    restartBtn->getRenderer()->setBackgroundColorHover(tgui::Color(75, 75, 85, 255));
+    restartBtn->getRenderer()->setBackgroundColor(tgui::Color(primaryBtnBg.r, primaryBtnBg.g, primaryBtnBg.b, primaryBtnBg.a));
+    restartBtn->getRenderer()->setBackgroundColorHover(tgui::Color(primaryBtnHover.r, primaryBtnHover.g, primaryBtnHover.b, primaryBtnHover.a));
     restartBtn->getRenderer()->setTextColor(tgui::Color(textPrimary.r, textPrimary.g, textPrimary.b, 255));
     restartBtn->getRenderer()->setBorders(0);
     restartBtn->getRenderer()->setRoundedBorderRadius(10);
@@ -349,8 +367,8 @@ void GameUI::showGameOverDialog(const std::string& message, std::function<void()
     quitBtn->setSize(200, 50);
     quitBtn->setPosition(260, 165);
     quitBtn->setTextSize(14);
-    quitBtn->getRenderer()->setBackgroundColor(tgui::Color(45, 45, 52, 255));
-    quitBtn->getRenderer()->setBackgroundColorHover(tgui::Color(65, 65, 75, 255));
+    quitBtn->getRenderer()->setBackgroundColor(tgui::Color(btnBg.r, btnBg.g, btnBg.b, btnBg.a));
+    quitBtn->getRenderer()->setBackgroundColorHover(tgui::Color(btnHover.r, btnHover.g, btnHover.b, btnHover.a));
     quitBtn->getRenderer()->setTextColor(tgui::Color(textPrimary.r, textPrimary.g, textPrimary.b, 255));
     quitBtn->getRenderer()->setBorders(0);
     quitBtn->getRenderer()->setRoundedBorderRadius(10);

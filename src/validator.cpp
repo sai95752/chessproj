@@ -192,7 +192,7 @@ bool Validator::isPawnAttacking(const Board& board, int pawnRow, int pawnCol, in
 
 bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
     auto [kingRow, kingCol] = findKing(board, kingColor);
-    if(kingRow == -1) return false;  // King not found (shouldn't happen in valid game)
+    if(kingRow == -1) return false;  // !king (will nvr happen)
 
     PIECE_COLOR opponent = (kingColor == PIECE_COLOR::WHITE) ? PIECE_COLOR::BLACK : PIECE_COLOR::WHITE;
     for(int row = 0; row < 8; row++) {
@@ -205,7 +205,6 @@ bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
             bool canAttack = false;
             switch (piece.type) {
                 case PIECE_TYPE::PAWN:
-                    // Use specialized pawn attack check to avoid empty square issues
                     canAttack = isPawnAttacking(board, row, col, kingRow, kingCol);
                     break;
                 case PIECE_TYPE::ROOK:
@@ -221,7 +220,7 @@ bool Validator::isKingInCheck(const Board &board, PIECE_COLOR kingColor) {
                     canAttack = isValidQueenMove(board, row, col, kingRow, kingCol);
                     break;
                 case PIECE_TYPE::KING:
-                    // Direct distance check to avoid recursion
+                    //distance
                     canAttack = (abs(row - kingRow) <= 1 && abs(col - kingCol) <= 1 && (row != kingRow || col != kingCol));
                     break;
                 default:
