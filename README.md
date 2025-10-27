@@ -1,2 +1,2 @@
 # Chess Engine
-Chess Engine built from scratch with C++ and SFML.
+Chess Engine built from scratch with C++ with SFML and TGUI.
